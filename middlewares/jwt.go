@@ -21,7 +21,7 @@ func JwtAuth(next http.HandlerFunc) http.HandlerFunc {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(helpers.Response{
+			json.NewEncoder(w).Encode(helpers.CommonResponse{
 				Message: "Authorization header missing",
 			})
 			return
@@ -30,7 +30,7 @@ func JwtAuth(next http.HandlerFunc) http.HandlerFunc {
 		const bearerPrefix = "Bearer "
 		if !strings.HasPrefix(authHeader, bearerPrefix) {
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(helpers.Response{
+			json.NewEncoder(w).Encode(helpers.CommonResponse{
 				Message: "Invalid authorization header format",
 			})
 			return
@@ -45,7 +45,7 @@ func JwtAuth(next http.HandlerFunc) http.HandlerFunc {
 
 		if err != nil || !token.Valid {
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(helpers.Response{
+			json.NewEncoder(w).Encode(helpers.CommonResponse{
 				Message: "Invalid token",
 			})
 			return
