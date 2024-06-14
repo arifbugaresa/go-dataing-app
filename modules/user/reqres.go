@@ -6,3 +6,10 @@ type UserReq struct {
 	Hobbies  string `json:"hobbies"`
 	Password string `json:"password"`
 }
+
+type UserResp struct {
+}
+
+type LoginResp struct {
+	Token string `json:"token"`
+}
