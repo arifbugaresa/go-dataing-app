@@ -10,13 +10,16 @@ import (
 )
 
 func NewHTTPHandler(endpoints Endpoints, r *mux.Router) http.Handler {
-	r.Handle("/login", httptransport.NewServer(
+	version := r.PathPrefix("/v1").Subrouter()
+	apiUser := version.PathPrefix("/users").Subrouter()
+
+	apiUser.Methods(http.MethodPost).Path("/login").Handler(httptransport.NewServer(
 		endpoints.LoginEndpoint,
 		decodeLoginRequest,
 		encodeLoginResponse,
 	))
 
-	return r
+	return apiUser
 }
 
 func decodeLoginRequest(_ context.Context, r *http.Request) (interface{}, error) {
